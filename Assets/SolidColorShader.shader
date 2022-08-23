@@ -12,14 +12,18 @@ Shader "Unlit/SolidColorShader"
 
 			#include "UnityCG.cginc"
 
+			uniform float4 _Color;
+
 			struct vertIn
 			{
 				float4 vertex : POSITION;
+				float4 vertexColor : COLOR;
 			};
 
 			struct vertOut
 			{
 				float4 vertex : SV_POSITION;
+				float4 vertexColor : COLOR;
 			};
 
 			// Implementation of the vertex shader
@@ -27,13 +31,14 @@ Shader "Unlit/SolidColorShader"
 			{
 				vertOut o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertexColor = v.vertexColor; // no manipulation as of yet
 				return o;
 			}
 			
 			// Implementation of the fragment (pixel) shader
 			fixed4 frag(vertOut v) : SV_Target
 			{
-				return float4(0.0f, 0.0f, 0.0f, 1.0f);
+				return v.vertexColor;
 			}
 			ENDCG
 		}
